@@ -16,4 +16,4 @@ docker-compose up migrator
 docker-compose up -d
 ```
 
-At this point the backend service should be available at `http://localhost:8080/`.
+The service should be available at `http://localhost:8080/`.

@@ -19,8 +19,6 @@ func StartServer(ctx context.Context, wg *sync.WaitGroup, port int64, conn *sql.
 
 	router := mux.NewRouter()
 	router.HandleFunc("/health", a.health).Methods("GET")
-	router.HandleFunc("/services", a.listServices).Methods("GET")
-	router.HandleFunc("/services/{id}", a.getService).Methods("GET")
 
 	server := &http.Server{
 		Addr:    fmt.Sprintf(":%d", port),

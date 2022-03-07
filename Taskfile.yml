@@ -9,7 +9,7 @@ tasks:
       - go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.1
   build:
     cmds:
-      - go build -o ./bin/backend ./cmd/backend
+      - go build -o ./bin/service ./cmd/service
   lint:
     cmds:
       - golangci-lint run
@@ -21,7 +21,7 @@ tasks:
       - go fmt ./...
   run: 
     cmds:
-      - ./bin/backend
+      - ./bin/service
   migrate-up:
     cmds:
       - migrate -database $POSTGRES_URL -path ./internal/persistence/migrations up
