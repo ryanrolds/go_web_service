@@ -1,0 +1,33 @@
+version: '3'
+
+dotenv: ['.env']
+
+tasks:
+  setup:
+    cmds:
+      - go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.44.2
+      - go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.1
+  build:
+    cmds:
+      - go build -o ./bin/backend ./cmd/backend
+  lint:
+    cmds:
+      - golangci-lint run
+  test:
+    cmds:
+      - go test ./...
+  fmt:
+    cmds:
+      - go fmt ./...
+  run: 
+    cmds:
+      - ./bin/backend
+  migrate-up:
+    cmds:
+      - migrate -database $POSTGRES_URL -path ./internal/persistence/migrations up
+  migrate-down:
+    cmds:
+      - migrate -database $POSTGRES_URL -path ./internal/persistence/migrations down
+  psql:
+    cmds:
+      - docker-compose exec postgres psql -h localhost -U $POSTGRES_USER -d $POSTGRES_DB

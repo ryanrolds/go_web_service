@@ -1,0 +1,11 @@
+FROM golang:1.17-alpine AS build
+
+RUN apk update && apk --no-cache --update add build-base
+
+RUN go install github.com/go-task/task/v3/cmd/task@latest
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@v4.15.1
+
+WORKDIR /migrator
+COPY . .
+
+CMD ["task", "migrate-up"]

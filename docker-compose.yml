@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  service:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_URL=postgres://user:password@postgres:5432/servicebackend?sslmode=disable
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+      - migrator
+  postgres:
+    image: postgres:14.2-alpine
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+  migrator:
+    build:
+      context: .
+      dockerfile: Dockerfile.migrator
+    volumes:
+      - ./internal/persistence/migrations:/migrator/internal/persistence/migrations
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_URL=postgres://user:password@postgres:5432/servicebackend?sslmode=disable
